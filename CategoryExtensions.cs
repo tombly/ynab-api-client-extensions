@@ -9,9 +9,9 @@ public static class CategoryExtensions
     /// on the remaining amount to reach the target. For non-recurring goals it
     /// simply divides the remaining amount by the remaining months.
     /// </summary>
-    public static decimal MonthlyNeed(this Category category)
+    public static long MonthlyNeed(this Category category)
     {
-        var multiplier = default(decimal?);
+        var multiplier = default(double?);
         switch (category.Goal_cadence)
         {
             case 0: // No repeat
@@ -45,7 +45,7 @@ public static class CategoryExtensions
         // If we have a multiplier then it's recurring.
         if (multiplier != null)
         {
-            return category.Goal_target * multiplier ?? 0;
+            return (long)(category.Goal_target ?? 0 * multiplier);
         }
         else
         {

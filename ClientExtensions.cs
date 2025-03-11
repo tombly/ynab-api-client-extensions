@@ -14,7 +14,7 @@ public static class YnabApiClientExtensions
         var budgetSummary = (budgetName != null ?
             (await client.GetBudgetsAsync(false)).Data.Budgets.FirstOrDefault(b => b.Name == budgetName) ?? throw new BudgetNotFoundException(budgetName) :
             (await client.GetBudgetsAsync(false)).Data.Budgets.First()) ?? throw new BudgetNotFoundException();
-
+        
         // Retrieve the budget detail from the API.
         return (await client.GetBudgetByIdAsync(budgetSummary.Id.ToString(), null)).Data.Budget;
     }
