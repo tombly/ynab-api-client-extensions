@@ -1,6 +1,6 @@
 namespace Ynab.Api.Client.Extensions;
 
-public static class DecimalExtensions
+public static class LongExtensions
 {
     /// <summary>
     /// Converts a milliunits amount to a currency amount. Implementation

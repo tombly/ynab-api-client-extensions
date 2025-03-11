@@ -17,10 +17,10 @@ public static class CategoryExtensions
             case 0: // No repeat
                 break;
             case 1: // Monthly
-                multiplier = 1 / category.Goal_cadence_frequency;
+                multiplier = 1d / category.Goal_cadence_frequency;
                 break;
             case 2: // Weekly
-                multiplier = 4 * category.Goal_cadence_frequency;
+                multiplier = 4d * category.Goal_cadence_frequency;
                 break;
             case 3: // Every 2 months
             case 4: // Every 3 months
@@ -32,20 +32,20 @@ public static class CategoryExtensions
             case 10: // Every 9 months
             case 11: // Every 10 months
             case 12: // Every 11 months
-                multiplier = 1 / (category.Goal_cadence - 1);
+                multiplier = 1d / (category.Goal_cadence - 1);
                 break;
             case 13: // Yearly
-                multiplier = 1 / (12 * category.Goal_cadence_frequency);
+                multiplier = 1d / (12 * category.Goal_cadence_frequency);
                 break;
             case 14: // Every 2 years
-                multiplier = 1 / 24;
+                multiplier = 1d / 24;
                 break;
         }
 
         // If we have a multiplier then it's recurring.
         if (multiplier != null)
         {
-            return (long)(category.Goal_target ?? 0 * multiplier);
+            return (long)((category.Goal_target ?? 0) * multiplier);
         }
         else
         {
