@@ -5,7 +5,7 @@
     <PackageDescription>Helpful extensions to the Ynab.Api.Client</PackageDescription>
     <PackageId>Ynab.Api.Client.Extensions</PackageId>
     <PackageTags>ynab;api;client;dotnetcore;dotnet;sdk</PackageTags>
-    <Version>1.73.2</Version>
+    <Version>1.73.3</Version>
     <Authors>Tom Bulatewicz</Authors>
     <PackageProjectUrl>https://github.com/tombly/ynab-api-client-extensions</PackageProjectUrl>
     <TargetFramework>net9.0</TargetFramework>
