@@ -8,7 +8,7 @@ public static class YnabApiClientExtensions
     /// Retrieves the budget detail for the specified budget name. If no budget
     /// name is provided, the first budget is returned.
     /// </summary>
-    public async static Task<BudgetDetail> GetBudgetDetailAsync(this YnabApiClient client, string? budgetName = null)
+    public async static Task<BudgetDetail> GetBudgetDetailAsync(this IYnabApiClient client, string? budgetName = null)
     {
         // Retrieve the budget summary.
         var budgetSummary = (budgetName != null ?
