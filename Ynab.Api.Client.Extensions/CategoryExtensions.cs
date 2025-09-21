@@ -10,15 +10,20 @@ public static class CategoryExtensions
     /// </summary>
     public static long MonthlyNeed(this Category category)
     {
-        // Targets are either one-time or recurring. One-time targets have a
-        // goal cadence of 0 or null, in which case we consider the monthly
-        // need to be the overall amount left divided by the number of months
-        // left in the goal period (includes the current month).
+        // Targets are either eventual, one-time, or recurring. Eventual targets
+        // have no specific due date and have a goal cadence of null.
+        // 
+        // One-time targets have a goal cadence of 0, in which case we consider
+        // the monthly need to be the overall amount left divided by the number
+        // of months left in the goal period (includes the current month).
         //
         // The cadence is null if the want is "Have a balance of ..." (type
         // "TB" or "TBD"). If the other two (type "NEED") then the cadence is
         // 0 to indicate that the target is a one-time target.
-        if (category.Goal_cadence == null || category.Goal_cadence == 0)
+        if (category.Goal_cadence == null)
+            return 0;
+        
+        if (category.Goal_cadence == 0)
         {
             if (category.Goal_overall_left > 0 && category.Goal_months_to_budget > 0)
                 return (long)(category.Goal_overall_left / category.Goal_months_to_budget);

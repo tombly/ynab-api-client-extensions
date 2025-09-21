@@ -2,32 +2,343 @@
 
 public class CategoryExtensionsTests
 {
-    [Theory]
-    [InlineData(null, null, 0L, null, null, 0L)]              // Target: None
-    [InlineData(1, 1, 1000000L, 1, 1000000L, 1000000L)]       // Target: Monthly/$1000/Last Day of Month/Set aside (or refill)
-    [InlineData(2, 1, 1000000L, 1, 4000000L, 4000000L)]       // Target: Weekly/$1000/Saturday/Set aside
-    [InlineData(13, 1, 1000000L, 2, 1000000L, 83333L)]        // Target: Yearly/$1000/April-to-May/Set aside
-    [InlineData(13, 1, 1000000L, 4, 1000000L, 83333L)]        // Target: Custom/$1000/Set aside/April-to-July/Repeat/1/Year
-    [InlineData(14, 2, 1000000L, 4, 1000000L, 41666L)]        // Target: Custom/$1000/Set aside/April-to-July/Repeat/2/Year
-    [InlineData(0, null, 1000000L, 4, 1000000L, 250000L)]     // Target: Custom/$1000/Set aside/April-to-July/No repeat
-    [InlineData(null, null, 1000000L, 0, 1000000L, 0L)]       // Target: Custom/$1000/Have a balance/No due date
-    [InlineData(null, null, 1000000L, 8, 1000000L, 125000L)]  // Target: Custom/$1000/Have a balance/April-to-November
-    public void TestMonthlyNeed(int? cadence, int? frequency, long? target, int? months, long? left, long expected)
+    [Fact]
+    public void MonthlyNeed_NoTarget()
     {
         // Arrange.
         var category = new Category
         {
-            Goal_cadence = cadence,
-            Goal_cadence_frequency = frequency,
-            Goal_target = target,
-            Goal_overall_left = left,
-            Goal_months_to_budget = months
+            Goal_cadence = null,
+            Goal_cadence_frequency = null,
+            Goal_target = 0,
+            Goal_months_to_budget = null,
+            Goal_overall_left = null
         };
 
         // Act.
         var actual = category.MonthlyNeed();
 
         // Assert.
-        Assert.Equal(expected, actual);
+        Assert.Equal(0L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Weekly_SetAside()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 2,
+            Goal_cadence_frequency = 1,
+            Goal_target = 125000,
+            Goal_months_to_budget = 1,
+            Goal_overall_left = 125000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(500000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Monthly_SetAside()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 1,
+            Goal_cadence_frequency = 1,
+            Goal_target = 480000,
+            Goal_months_to_budget = 1,
+            Goal_overall_left = 480000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(480000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Yearly_SetAside()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 13,
+            Goal_cadence_frequency = 1,
+            Goal_target = 1250000,
+            Goal_months_to_budget = 2,
+            Goal_overall_left = 1250000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(104166L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Weekly_RefillUpTo()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 2,
+            Goal_cadence_frequency = 1,
+            Goal_target = 380000,
+            Goal_months_to_budget = 1,
+            Goal_overall_left = 380000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(1520000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Monthly_RefillUpTo()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 1,
+            Goal_cadence_frequency = 1,
+            Goal_target = 900000,
+            Goal_months_to_budget = 1,
+            Goal_overall_left = 900000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(900000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Yearly_RefillUpTo()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 13,
+            Goal_cadence_frequency = 1,
+            Goal_target = 1800000,
+            Goal_months_to_budget = 2,
+            Goal_overall_left = 1800000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(150000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_SetAside_NoRepeat()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 0,
+            Goal_cadence_frequency = null,
+            Goal_target = 675000,
+            Goal_months_to_budget = 4,
+            Goal_overall_left = 675000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(168750L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_SetAside_Repeat_1_Month()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 1,
+            Goal_cadence_frequency = 1,
+            Goal_target = 675000,
+            Goal_months_to_budget = 3,
+            Goal_overall_left = 675000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(675000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_SetAside_Repeat_3_Month()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 1,
+            Goal_cadence_frequency = 3,
+            Goal_target = 675000,
+            Goal_months_to_budget = 3,
+            Goal_overall_left = 675000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(225000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_SetAside_Repeat_2_Year()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 13,
+            Goal_cadence_frequency = 2,
+            Goal_target = 675000,
+            Goal_months_to_budget = 3,
+            Goal_overall_left = 675000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(28125L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_RefillUpTo_NoRepeat()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 13,
+            Goal_cadence_frequency = 2,
+            Goal_target = 675000,
+            Goal_months_to_budget = 3,
+            Goal_overall_left = 675000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(28125L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_RefillUpTo_Repeat_1_Month()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 1,
+            Goal_cadence_frequency = 1,
+            Goal_target = 575000,
+            Goal_months_to_budget = 3,
+            Goal_overall_left = 575000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(575000L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_RefillUpTo_Repeat_3_Month()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 1,
+            Goal_cadence_frequency = 3,
+            Goal_target = 575000,
+            Goal_months_to_budget = 3,
+            Goal_overall_left = 575000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(191666L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_RefillUpTo_Repeat_2_Year()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 13,
+            Goal_cadence_frequency = 2,
+            Goal_target = 575000,
+            Goal_months_to_budget = 3,
+            Goal_overall_left = 575000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(23958L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_HaveABalance_NoDueDate()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = null,
+            Goal_cadence_frequency = null,
+            Goal_target = 1200000,
+            Goal_percentage_complete = 0,
+            Goal_overall_left = 1200000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(0L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_HaveABalance_DueDate()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = null,
+            Goal_cadence_frequency = null,
+            Goal_target = 1345000,
+            Goal_percentage_complete = 0,
+            Goal_overall_left = 1345000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(0L, actual);
     }
 }
