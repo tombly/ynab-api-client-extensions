@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="Ynab.Api.Client.Extensions\Ynab.Api.Client.Extensions.csproj" Type="FAE04EC0-301F-11D3-BF4B-00C04F79EFBC" Id="9633C925-599A-406F-879A-C2550A35A4BA" />
+  <Project Path="Ynab.Api.Client.Extensions.Test\Ynab.Api.Client.Extensions.Test.csproj" Type="FAE04EC0-301F-11D3-BF4B-00C04F79EFBC" Id="900B2E6A-0A20-4899-828D-28D90DBAA2ED" />
+  <Configurations>
+    <Configuration>Debug|Any CPU</Configuration>
+    <Configuration>Release|Any CPU</Configuration>
+  </Configurations>
+  <Properties>
+    <Property Name="SolutionGuid" Value="{604A37BE-E0F4-4CDF-9328-1FDC155385DC}" />
+  </Properties>
+</Solution>
