@@ -25,8 +25,11 @@ public static class CategoryExtensions
         
         if (category.Goal_cadence == 0)
         {
+            // The Goal_months_to_budget includes the current month and the month
+            // of the target, so if there was money budgeted in the current month,
+            // we need to include that in the amount left to budget.
             if (category.Goal_overall_left > 0 && category.Goal_months_to_budget > 0)
-                return (long)(category.Goal_overall_left / category.Goal_months_to_budget);
+                return (long)((category.Goal_overall_left + category.Budgeted) / category.Goal_months_to_budget);
             else
                 return 0;
         }

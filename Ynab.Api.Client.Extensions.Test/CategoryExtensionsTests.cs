@@ -152,7 +152,8 @@ public class CategoryExtensionsTests
             Goal_cadence_frequency = null,
             Goal_target = 675000,
             Goal_months_to_budget = 4,
-            Goal_overall_left = 675000
+            Goal_overall_left = 675000,
+            Budgeted = 0
         };
 
         // Act.
@@ -160,6 +161,27 @@ public class CategoryExtensionsTests
 
         // Assert.
         Assert.Equal(168750L, actual);
+    }
+
+    [Fact]
+    public void MonthlyNeed_Custom_SetAside_NoRepeat_WithBudgeted()
+    {
+        // Arrange.
+        var category = new Category
+        {
+            Goal_cadence = 0,
+            Goal_cadence_frequency = null,
+            Goal_target = 675000,
+            Goal_months_to_budget = 4,
+            Goal_overall_left = 675000,
+            Budgeted = 125000
+        };
+
+        // Act.
+        var actual = category.MonthlyNeed();
+
+        // Assert.
+        Assert.Equal(200000L, actual);
     }
 
     [Fact]
