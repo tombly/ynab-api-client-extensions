@@ -17,11 +17,20 @@ public static class CategoryExtensions
         // the monthly need to be the overall amount left divided by the number
         // of months left in the goal period (includes the current month).
         //
-        // The cadence is null if the want is "Have a balance of ..." (type
-        // "TB" or "TBD"). If the other two (type "NEED") then the cadence is
-        // 0 to indicate that the target is a one-time target.
+        // The cadence is null for "Have a balance" (type "TB", no due date) and
+        // "Have a balance by date" (type "TBD"). For TBD we calculate the monthly
+        // need the same way as a one-time target (cadence 0). For TB there is no
+        // due date so we return 0. For type "NEED" the cadence is 0.
         if (category.Goal_cadence == null)
-            return 0;
+        {
+            if (category.Goal_type != CategoryGoalType.TBD)
+                return 0;
+
+            if (category.Goal_overall_left > 0 && category.Goal_months_to_budget > 0)
+                return (long)((category.Goal_overall_left + category.Budgeted) / category.Goal_months_to_budget);
+            else
+                return 0;
+        }
         
         if (category.Goal_cadence == 0)
         {

@@ -330,6 +330,7 @@ public class CategoryExtensionsTests
         // Arrange.
         var category = new Category
         {
+            Goal_type = CategoryGoalType.TB,
             Goal_cadence = null,
             Goal_cadence_frequency = null,
             Goal_target = 1200000,
@@ -350,9 +351,11 @@ public class CategoryExtensionsTests
         // Arrange.
         var category = new Category
         {
+            Goal_type = CategoryGoalType.TBD,
             Goal_cadence = null,
             Goal_cadence_frequency = null,
             Goal_target = 1345000,
+            Goal_months_to_budget = 4,
             Goal_percentage_complete = 0,
             Goal_overall_left = 1345000
         };
@@ -361,6 +364,6 @@ public class CategoryExtensionsTests
         var actual = category.MonthlyNeed();
 
         // Assert.
-        Assert.Equal(0L, actual);
+        Assert.Equal(336250L, actual);
     }
 }
