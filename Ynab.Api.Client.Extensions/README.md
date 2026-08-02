@@ -17,7 +17,7 @@ using Ynab.Api.Client.Extensions;
 
 ...
 
-var budgetDetail = await _ynabApiClient.GetBudgetDetailAsync();
+var planDetail = await _ynabApiClient.GetPlanDetailAsync();
 ```
 
 ## License

@@ -1,3 +1,6 @@
+using Ynab.Api.Client.Enums;
+using Ynab.Api.Client.Models;
+
 namespace Ynab.Api.Client.Extensions;
 
 public static class CategoryExtensions
@@ -21,24 +24,24 @@ public static class CategoryExtensions
         // "Have a balance by date" (type "TBD"). For TBD we calculate the monthly
         // need the same way as a one-time target (cadence 0). For TB there is no
         // due date so we return 0. For type "NEED" the cadence is 0.
-        if (category.Goal_cadence == null)
+        if (category.GoalCadence == null)
         {
-            if (category.Goal_type != CategoryGoalType.TBD)
+            if (category.GoalType != CategoryGoalType.TBD)
                 return 0;
 
-            if (category.Goal_overall_left > 0 && category.Goal_months_to_budget > 0)
-                return (long)((category.Goal_overall_left + category.Budgeted) / category.Goal_months_to_budget);
+            if (category.GoalOverallLeft > 0 && category.GoalMonthsToBudget > 0)
+                return (long)((category.GoalOverallLeft + category.Budgeted) / category.GoalMonthsToBudget);
             else
                 return 0;
         }
-        
-        if (category.Goal_cadence == 0)
+
+        if (category.GoalCadence == 0)
         {
-            // The Goal_months_to_budget includes the current month and the month
+            // The GoalMonthsToBudget includes the current month and the month
             // of the target, so if there was money budgeted in the current month,
             // we need to include that in the amount left to budget.
-            if (category.Goal_overall_left > 0 && category.Goal_months_to_budget > 0)
-                return (long)((category.Goal_overall_left + category.Budgeted) / category.Goal_months_to_budget);
+            if (category.GoalOverallLeft > 0 && category.GoalMonthsToBudget > 0)
+                return (long)((category.GoalOverallLeft + category.Budgeted) / category.GoalMonthsToBudget);
             else
                 return 0;
         }
@@ -53,25 +56,25 @@ public static class CategoryExtensions
         // and 14 = Every 2 Years.
 
         // Figure out how many months until the next goal is due.
-        var monthsToTarget = category.Goal_cadence switch
+        var monthsToTarget = category.GoalCadence switch
         {
-            1 => category.Goal_cadence_frequency,           // Monthly
-            2 => category.Goal_cadence_frequency / 4d,      // Weekly
-            13 => category.Goal_cadence_frequency * 12d,    // Yearly
-            14 => 24,                                       // Every 2 years
-            3 => 2,                                         // Every 2 months
-            4 => 3,                                         // Every 3 months
-            5 => 4,                                         // Every 4 months
-            6 => 5,                                         // Every 5 months
-            7 => 6,                                         // Every 6 months
-            8 => 7,                                         // Every 7 months
-            9 => 8,                                         // Every 8 months
-            10 => 9,                                        // Every 9 months
-            11 => 10,                                       // Every 10 months
-            12 => 11,                                       // Every 11 months
-            _ => throw new Exception($"Unrecognized goal cadence: '{category.Goal_cadence}'")
+            1 => category.GoalCadenceFrequency,           // Monthly
+            2 => category.GoalCadenceFrequency / 4d,      // Weekly
+            13 => category.GoalCadenceFrequency * 12d,    // Yearly
+            14 => 24,                                     // Every 2 years
+            3 => 2,                                       // Every 2 months
+            4 => 3,                                       // Every 3 months
+            5 => 4,                                       // Every 4 months
+            6 => 5,                                       // Every 5 months
+            7 => 6,                                       // Every 6 months
+            8 => 7,                                       // Every 7 months
+            9 => 8,                                       // Every 8 months
+            10 => 9,                                      // Every 9 months
+            11 => 10,                                     // Every 10 months
+            12 => 11,                                     // Every 11 months
+            _ => throw new Exception($"Unrecognized goal cadence: '{category.GoalCadence}'")
         };
 
-        return (long)((category.Goal_target ?? 0) * (1d / monthsToTarget!));
+        return (long)((category.GoalTarget ?? 0) * (1d / monthsToTarget!));
     }
 }

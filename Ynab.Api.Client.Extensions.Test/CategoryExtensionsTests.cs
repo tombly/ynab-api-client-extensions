@@ -1,18 +1,34 @@
-﻿namespace Ynab.Api.Client.Extensions.Test;
+using Ynab.Api.Client.Enums;
+using Ynab.Api.Client.Models;
+
+namespace Ynab.Api.Client.Extensions.Test;
 
 public class CategoryExtensionsTests
 {
+    private static Category NewCategory() => new()
+    {
+        Id = Guid.NewGuid(),
+        CategoryGroupId = Guid.NewGuid(),
+        Name = "Test Category",
+        Hidden = false,
+        Internal = false,
+        Budgeted = 0,
+        Activity = 0,
+        Balance = 0,
+        Deleted = false
+    };
+
     [Fact]
     public void MonthlyNeed_NoTarget()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = null,
-            Goal_cadence_frequency = null,
-            Goal_target = 0,
-            Goal_months_to_budget = null,
-            Goal_overall_left = null
+            GoalCadence = null,
+            GoalCadenceFrequency = null,
+            GoalTarget = 0,
+            GoalMonthsToBudget = null,
+            GoalOverallLeft = null
         };
 
         // Act.
@@ -26,13 +42,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Weekly_SetAside()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 2,
-            Goal_cadence_frequency = 1,
-            Goal_target = 125000,
-            Goal_months_to_budget = 1,
-            Goal_overall_left = 125000
+            GoalCadence = 2,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 125000,
+            GoalMonthsToBudget = 1,
+            GoalOverallLeft = 125000
         };
 
         // Act.
@@ -46,13 +62,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Monthly_SetAside()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 1,
-            Goal_cadence_frequency = 1,
-            Goal_target = 480000,
-            Goal_months_to_budget = 1,
-            Goal_overall_left = 480000
+            GoalCadence = 1,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 480000,
+            GoalMonthsToBudget = 1,
+            GoalOverallLeft = 480000
         };
 
         // Act.
@@ -66,13 +82,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Yearly_SetAside()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 13,
-            Goal_cadence_frequency = 1,
-            Goal_target = 1250000,
-            Goal_months_to_budget = 2,
-            Goal_overall_left = 1250000
+            GoalCadence = 13,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 1250000,
+            GoalMonthsToBudget = 2,
+            GoalOverallLeft = 1250000
         };
 
         // Act.
@@ -86,13 +102,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Weekly_RefillUpTo()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 2,
-            Goal_cadence_frequency = 1,
-            Goal_target = 380000,
-            Goal_months_to_budget = 1,
-            Goal_overall_left = 380000
+            GoalCadence = 2,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 380000,
+            GoalMonthsToBudget = 1,
+            GoalOverallLeft = 380000
         };
 
         // Act.
@@ -106,13 +122,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Monthly_RefillUpTo()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 1,
-            Goal_cadence_frequency = 1,
-            Goal_target = 900000,
-            Goal_months_to_budget = 1,
-            Goal_overall_left = 900000
+            GoalCadence = 1,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 900000,
+            GoalMonthsToBudget = 1,
+            GoalOverallLeft = 900000
         };
 
         // Act.
@@ -126,13 +142,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Yearly_RefillUpTo()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 13,
-            Goal_cadence_frequency = 1,
-            Goal_target = 1800000,
-            Goal_months_to_budget = 2,
-            Goal_overall_left = 1800000
+            GoalCadence = 13,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 1800000,
+            GoalMonthsToBudget = 2,
+            GoalOverallLeft = 1800000
         };
 
         // Act.
@@ -146,13 +162,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_SetAside_NoRepeat()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 0,
-            Goal_cadence_frequency = null,
-            Goal_target = 675000,
-            Goal_months_to_budget = 4,
-            Goal_overall_left = 675000,
+            GoalCadence = 0,
+            GoalCadenceFrequency = null,
+            GoalTarget = 675000,
+            GoalMonthsToBudget = 4,
+            GoalOverallLeft = 675000,
             Budgeted = 0
         };
 
@@ -167,13 +183,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_SetAside_NoRepeat_WithBudgeted()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 0,
-            Goal_cadence_frequency = null,
-            Goal_target = 675000,
-            Goal_months_to_budget = 4,
-            Goal_overall_left = 675000,
+            GoalCadence = 0,
+            GoalCadenceFrequency = null,
+            GoalTarget = 675000,
+            GoalMonthsToBudget = 4,
+            GoalOverallLeft = 675000,
             Budgeted = 125000
         };
 
@@ -188,13 +204,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_SetAside_Repeat_1_Month()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 1,
-            Goal_cadence_frequency = 1,
-            Goal_target = 675000,
-            Goal_months_to_budget = 3,
-            Goal_overall_left = 675000
+            GoalCadence = 1,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 675000,
+            GoalMonthsToBudget = 3,
+            GoalOverallLeft = 675000
         };
 
         // Act.
@@ -208,13 +224,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_SetAside_Repeat_3_Month()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 1,
-            Goal_cadence_frequency = 3,
-            Goal_target = 675000,
-            Goal_months_to_budget = 3,
-            Goal_overall_left = 675000
+            GoalCadence = 1,
+            GoalCadenceFrequency = 3,
+            GoalTarget = 675000,
+            GoalMonthsToBudget = 3,
+            GoalOverallLeft = 675000
         };
 
         // Act.
@@ -228,13 +244,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_SetAside_Repeat_2_Year()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 13,
-            Goal_cadence_frequency = 2,
-            Goal_target = 675000,
-            Goal_months_to_budget = 3,
-            Goal_overall_left = 675000
+            GoalCadence = 13,
+            GoalCadenceFrequency = 2,
+            GoalTarget = 675000,
+            GoalMonthsToBudget = 3,
+            GoalOverallLeft = 675000
         };
 
         // Act.
@@ -248,13 +264,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_RefillUpTo_NoRepeat()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 13,
-            Goal_cadence_frequency = 2,
-            Goal_target = 675000,
-            Goal_months_to_budget = 3,
-            Goal_overall_left = 675000
+            GoalCadence = 13,
+            GoalCadenceFrequency = 2,
+            GoalTarget = 675000,
+            GoalMonthsToBudget = 3,
+            GoalOverallLeft = 675000
         };
 
         // Act.
@@ -268,13 +284,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_RefillUpTo_Repeat_1_Month()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 1,
-            Goal_cadence_frequency = 1,
-            Goal_target = 575000,
-            Goal_months_to_budget = 3,
-            Goal_overall_left = 575000
+            GoalCadence = 1,
+            GoalCadenceFrequency = 1,
+            GoalTarget = 575000,
+            GoalMonthsToBudget = 3,
+            GoalOverallLeft = 575000
         };
 
         // Act.
@@ -288,13 +304,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_RefillUpTo_Repeat_3_Month()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 1,
-            Goal_cadence_frequency = 3,
-            Goal_target = 575000,
-            Goal_months_to_budget = 3,
-            Goal_overall_left = 575000
+            GoalCadence = 1,
+            GoalCadenceFrequency = 3,
+            GoalTarget = 575000,
+            GoalMonthsToBudget = 3,
+            GoalOverallLeft = 575000
         };
 
         // Act.
@@ -308,13 +324,13 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_RefillUpTo_Repeat_2_Year()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_cadence = 13,
-            Goal_cadence_frequency = 2,
-            Goal_target = 575000,
-            Goal_months_to_budget = 3,
-            Goal_overall_left = 575000
+            GoalCadence = 13,
+            GoalCadenceFrequency = 2,
+            GoalTarget = 575000,
+            GoalMonthsToBudget = 3,
+            GoalOverallLeft = 575000
         };
 
         // Act.
@@ -328,14 +344,14 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_HaveABalance_NoDueDate()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_type = CategoryGoalType.TB,
-            Goal_cadence = null,
-            Goal_cadence_frequency = null,
-            Goal_target = 1200000,
-            Goal_percentage_complete = 0,
-            Goal_overall_left = 1200000
+            GoalType = CategoryGoalType.TB,
+            GoalCadence = null,
+            GoalCadenceFrequency = null,
+            GoalTarget = 1200000,
+            GoalPercentageComplete = 0,
+            GoalOverallLeft = 1200000
         };
 
         // Act.
@@ -349,15 +365,15 @@ public class CategoryExtensionsTests
     public void MonthlyNeed_Custom_HaveABalance_DueDate()
     {
         // Arrange.
-        var category = new Category
+        var category = NewCategory() with
         {
-            Goal_type = CategoryGoalType.TBD,
-            Goal_cadence = null,
-            Goal_cadence_frequency = null,
-            Goal_target = 1345000,
-            Goal_months_to_budget = 4,
-            Goal_percentage_complete = 0,
-            Goal_overall_left = 1345000
+            GoalType = CategoryGoalType.TBD,
+            GoalCadence = null,
+            GoalCadenceFrequency = null,
+            GoalTarget = 1345000,
+            GoalMonthsToBudget = 4,
+            GoalPercentageComplete = 0,
+            GoalOverallLeft = 1345000
         };
 
         // Act.
